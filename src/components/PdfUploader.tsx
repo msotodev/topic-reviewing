@@ -33,7 +33,7 @@ export function PdfUploader({ onUploadComplete }: { onUploadComplete: () => Prom
               ? await pdf.getDestination(dest)
               : dest;
             if (d) {
-              const pageIndex = await pdf.getPageIndex((d as unknown[])[0] as pdfjsLib.PDFRef);
+              const pageIndex = await pdf.getPageIndex((d as unknown[])[0] as never);
               return pageIndex + 1;
             }
           } catch {}

@@ -26,11 +26,12 @@ export function QuizPanel({ questions, lessonId, quizId, onComplete }: Props) {
 
   const handleSubmit = async () => {
     setSubmitted(true);
-    const score = selectedAnswers.reduce((acc, answer, index) => {
+    const validAnswers = selectedAnswers.filter((a): a is number => a !== null);
+    const score = validAnswers.reduce((acc, answer, index) => {
       return acc + (answer === questions[index].correctAnswer ? 1 : 0);
     }, 0);
 
-    await quizService.saveAttempt(quizId, lessonId, score, questions.length, selectedAnswers as number[]);
+    await quizService.saveAttempt(quizId, lessonId, score, questions.length, validAnswers);
     setShowResults(true);
   };
 
@@ -42,7 +43,8 @@ export function QuizPanel({ questions, lessonId, quizId, onComplete }: Props) {
   };
 
   if (showResults) {
-    const score = selectedAnswers.reduce((acc, answer, index) => {
+    const validAnswers = selectedAnswers.filter((a): a is number => a !== null);
+    const score = validAnswers.reduce((acc, answer, index) => {
       return acc + (answer === questions[index].correctAnswer ? 1 : 0);
     }, 0);
     const percentage = Math.round((score / questions.length) * 100);
